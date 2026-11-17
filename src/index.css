@@ -1,0 +1,71 @@
+/* 디자인 토큰: 다크 + 오렌지 + 레드 */
+:root {
+  --color-bg: #0e0e10;
+  --color-surface: #1c1c21;
+  --color-surface-raised: #24242b;
+  --color-orange: #ff6b1a;
+  --color-red: #e5252e;
+  --color-text: #f5f3ef;
+  --color-text-muted: #8a8a93;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-orange-soft: rgba(255, 107, 26, 0.14);
+  --gradient-power: linear-gradient(135deg, #ff6b1a 0%, #e5252e 100%);
+  --font-display: 'Anton', 'Black Han Sans', sans-serif;
+  --font-display-ko: 'Black Han Sans', 'Pretendard', sans-serif;
+  --font-body: 'Pretendard', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Pretendard', monospace;
+}
+
+/* CSS 초기화 */
+* {
+  box-sizing: border-box;
+}
+
+/* HTML, Body 초기화 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Root 앱 컨테이너 설정 */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 키보드 포커스 표시 */
+:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+/* 움직임 줄이기 설정을 켠 사용자는 애니메이션 최소화 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
