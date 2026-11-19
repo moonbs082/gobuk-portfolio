@@ -7,6 +7,8 @@ import Toolbar from '@mui/material/Toolbar';
 const navItems = [
   { to: '/', label: 'HOME' },
   { to: '/about', label: 'ABOUT' },
+  /** mini_sns 의 운동 자세 목록 화면으로 이동 */
+  { to: '/mini-sns/exercises', label: 'EXERCISES' },
 ];
 
 /**
@@ -35,6 +37,10 @@ function SiteHeader() {
           mx: 'auto',
           px: { xs: 2, md: 3 },
           justifyContent: 'space-between',
+          /** 좁은 화면에서 메뉴가 넘치면 다음 줄로 내린다 */
+          flexWrap: 'wrap',
+          rowGap: 0.5,
+          py: { xs: 1, md: 0 },
         }}
       >
         <Box
@@ -51,14 +57,50 @@ function SiteHeader() {
           <Box
             component="span"
             sx={{
-              fontFamily: 'var(--font-display)',
-              fontSize: { xs: '1.4rem', md: '1.6rem' },
-              letterSpacing: 2,
-              color: 'var(--color-text)',
+              display: 'flex',
+              flexDirection: 'column',
+              lineHeight: 1.2,
             }}
           >
-            GOBUK
-            <Box component="span" sx={{ color: 'var(--color-orange)' }}>.</Box>
+            <Box
+              component="span"
+              sx={{
+                fontFamily: 'var(--font-display)',
+                fontSize: { xs: '1rem', md: '1.4rem' },
+                letterSpacing: { xs: 1, md: 2 },
+                color: 'var(--color-text)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              { /** 대문자(B·H·M)는 강조 색상 + 굵게 표시 */ }
+              { 'Building Healthy Muscles'.split('').map((char, index) => (
+                /[A-Z]/.test(char) ? (
+                  <Box
+                    key={ index }
+                    component="span"
+                    sx={{
+                      color: 'var(--color-orange)',
+                      fontWeight: 900,
+                      fontSize: '1.2em',
+                    }}
+                  >
+                    { char }
+                  </Box>
+                ) : char
+              )) }
+              <Box component="span" sx={{ color: 'var(--color-orange)' }}>.</Box>
+            </Box>
+            <Box
+              component="span"
+              sx={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: { xs: '0.65rem', md: '0.75rem' },
+                letterSpacing: '0.12em',
+                color: 'var(--color-orange)',
+              }}
+            >
+              Project : GOBUK
+            </Box>
           </Box>
           <Box
             component="span"
@@ -74,7 +116,7 @@ function SiteHeader() {
             문보성
           </Box>
         </Box>
-        <Box component="nav" sx={{ display: 'flex', gap: 1 }}>
+        <Box component="nav" sx={{ display: 'flex', gap: { xs: 0.5, md: 1 }, ml: 'auto' }}>
           {navItems.map((item) => (
             <Button
               key={ item.to }

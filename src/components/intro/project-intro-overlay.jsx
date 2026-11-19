@@ -22,6 +22,8 @@ import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 function ProjectIntroOverlay({ title, url, closeMessage = '', onClose }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isMounted, setIsMounted] = useState(true);
+  /** iframe 을 다시 그리기 위한 키 (값이 바뀌면 iframe 이 처음 주소로 새로 열린다) */
+  const [iframeKey, setIframeKey] = useState(0);
 
   /** iframe 안에서 흐름을 마쳤다는 신호를 받으면 인트로를 닫는다 (같은 주소에서 온 신호만 허용) */
   useEffect(() => {
@@ -44,6 +46,11 @@ function ProjectIntroOverlay({ title, url, closeMessage = '', onClose }) {
       document.body.style.overflow = prevOverflow;
     };
   }, [isMounted]);
+
+  /** 제목 클릭 시 iframe 을 처음 화면(신체 정보 입력)으로 되돌린다 */
+  const handleTitleClick = () => {
+    setIframeKey((prev) => prev + 1);
+  };
 
   const handleSkip = () => {
     setIsOpen(false);
@@ -90,7 +97,18 @@ function ProjectIntroOverlay({ title, url, closeMessage = '', onClose }) {
               FEATURED PROJECT
             </Box>
             <Box
+              component="button"
+              type="button"
+              onClick={ handleTitleClick }
+              title="처음 화면(신체 정보 입력)으로 돌아가기"
               sx={{
+                display: 'block',
+                maxWidth: '100%',
+                p: 0,
+                border: 0,
+                background: 'none',
+                cursor: 'pointer',
+                textAlign: 'left',
                 fontFamily: 'var(--font-display-ko)',
                 fontSize: { xs: '1rem', md: '1.25rem' },
                 color: 'var(--color-text)',
@@ -98,6 +116,8 @@ function ProjectIntroOverlay({ title, url, closeMessage = '', onClose }) {
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                transition: 'opacity 0.2s',
+                '&:hover': { opacity: 0.8 },
               }}
             >
               { /** 대문자(예: B·H·M)는 강조 색상 + 굵게 표시 */ }
@@ -138,6 +158,7 @@ function ProjectIntroOverlay({ title, url, closeMessage = '', onClose }) {
         </Box>
 
         <Box
+          key={ iframeKey }
           component="iframe"
           src={ url }
           title={ `${title} 화면` }
