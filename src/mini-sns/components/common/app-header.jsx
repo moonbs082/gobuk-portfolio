@@ -50,7 +50,7 @@ function AppHeader({ isTitleHidden = false }) {
               visibility: isTitleHidden ? 'hidden' : 'visible',
             }}
           >
-            Healthy Muscle <Box component="span" sx={{ color: 'secondary.main' }}>Making</Box>
+            Building Healthy <Box component="span" sx={{ color: 'secondary.main' }}>Muscles</Box>
           </Box>
 
           <Box sx={{ pr: 0.5 }}>

@@ -72,8 +72,8 @@ function AuthPage() {
     <Box>
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <Typography component="h1" sx={{ fontSize: { xs: '1.9rem', md: '2.4rem' }, fontWeight: 900, lineHeight: 1.1 }}>
-          Healthy Muscle
-          <Box component="span" sx={{ display: 'block', color: 'secondary.main' }}>Making</Box>
+          Building Healthy
+          <Box component="span" sx={{ display: 'block', color: 'secondary.main' }}>Muscles</Box>
         </Typography>
         <Typography sx={{ color: 'text.secondary', mt: 1 }}>
           { mode === 'signup' ? '분석 결과를 저장하고 운동 기록을 시작하세요' : '다시 오신 걸 환영해요' }

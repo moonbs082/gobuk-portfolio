@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import TurtleHeroArt from './turtle-hero-art.jsx';
 
 /**
- * HeroBanner 컴포넌트 - 홈 최상단 "Healthy Muscle Making" 타이틀 + 거북이 배경
+ * HeroBanner 컴포넌트 - 홈 최상단 "Building Healthy Muscles" 타이틀 + 거북이 배경
  *
  * Props:
  * @param {string} greeting - 타이틀 아래 인사 문구 [Optional, 기본값: '오늘의 운동이 내일의 몸을 만듭니다']
@@ -52,8 +52,8 @@ function HeroBanner({ greeting = '오늘의 운동이 내일의 몸을 만듭니
             letterSpacing: '-0.02em',
           }}
         >
-          Healthy Muscle
-          <Box component="span" sx={{ display: 'block', color: 'secondary.main' }}>Making</Box>
+          Building Healthy
+          <Box component="span" sx={{ display: 'block', color: 'secondary.main' }}>Muscles</Box>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1.5 }}>
           <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: 'warning.main', flexShrink: 0 }} />

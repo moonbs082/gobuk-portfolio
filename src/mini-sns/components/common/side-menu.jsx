@@ -93,8 +93,8 @@ function SideMenu({ isOpen, onClose }) {
       <Box sx={{ width: 280, height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ bgcolor: 'primary.main', color: 'common.white', px: 3, py: 3 }}>
           <Box sx={{ fontSize: '1.25rem', fontWeight: 900, lineHeight: 1.2 }}>
-            Healthy Muscle
-            <Box component="span" sx={{ color: 'secondary.main' }}> Making</Box>
+            Building Healthy
+            <Box component="span" sx={{ color: 'secondary.main' }}> Muscles</Box>
           </Box>
           <Box sx={{ fontSize: '0.875rem', color: 'grey.400', mt: 1 }}>
             { profile ? `${profile.display_name} 님, 오늘도 화이팅!` : '로그인하고 기록을 시작하세요' }
