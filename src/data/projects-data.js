@@ -2,7 +2,7 @@
 export const projects = [
   {
     id: 'ai-smart-workout',
-    title: 'AI 스마트 운동',
+    title: 'Building Healthy Muscles',
     description:
       '운동에 관심 있는 누구나 자세와 운동 정보를 찾고 공유할 수 있는 모바일 웹앱. 이 포트폴리오의 출발점이 된 프로젝트입니다.',
     techStack: ['React', 'MUI', 'Supabase'],

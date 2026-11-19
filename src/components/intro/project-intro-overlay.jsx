@@ -100,7 +100,22 @@ function ProjectIntroOverlay({ title, url, closeMessage = '', onClose }) {
                 textOverflow: 'ellipsis',
               }}
             >
-              { title }
+              { /** 대문자(예: B·H·M)는 강조 색상 + 굵게 표시 */ }
+              { title.split('').map((char, index) => (
+                /[A-Z]/.test(char) ? (
+                  <Box
+                    key={ index }
+                    component="span"
+                    sx={{
+                      color: 'var(--color-orange)',
+                      fontWeight: 900,
+                      fontSize: '1.2em',
+                    }}
+                  >
+                    { char }
+                  </Box>
+                ) : char
+              )) }
             </Box>
           </Box>
 
