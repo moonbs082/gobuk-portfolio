@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import PageTitle from '../components/common/page-title.jsx';
+import Posture3DViewer from '../components/exercise/posture-3d-viewer.jsx';
 import PostureVideoChecker from '../components/exercise/posture-video-checker.jsx';
 import SectionTitle from '../components/ui/section-title.jsx';
 import { findExercise } from '../utils/exercise-data.js';
@@ -11,7 +12,7 @@ import { useMiniSnsNavigate } from '../hooks/use-mini-sns-navigate.js';
 import { toMiniSnsPath } from '../utils/mini-sns-path.js';
 
 /**
- * ExerciseDetailPage - 운동 하나의 기구 사용법 · 체크포인트 · 효과 · 주의사항 · 자세 영상 비교
+ * ExerciseDetailPage - 운동 하나의 3D 자세 보기 · 기구 사용법 · 체크포인트 · 효과 · 주의사항 · 자세 영상 비교
  *
  * Props: 없음 (URL 의 :exerciseId 사용)
  *
@@ -37,6 +38,11 @@ function ExerciseDetailPage() {
         </IconButton>
         <PageTitle title={ exercise.name } subtitle={ `${exercise.equipment} · ${exercise.level}` } />
       </Box>
+
+      <Paper elevation={ 0 } sx={ paperSx }>
+        <SectionTitle>운동 자세 3D 보기</SectionTitle>
+        <Posture3DViewer key={ exercise.id } exerciseId={ exercise.id } exerciseName={ exercise.name } />
+      </Paper>
 
       <Paper elevation={ 0 } sx={ paperSx }>
         <SectionTitle>기구 사용법 · 동작 순서</SectionTitle>
