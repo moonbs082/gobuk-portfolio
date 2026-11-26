@@ -146,6 +146,23 @@ function PostureRig({ pose, isPlaying = true, dragRef }) {
       });
     }
 
+    /** 바 경로(벤치프레스 · 랫풀다운): 바 중앙을 경로를 따라 움직이고, 두 손은 그립 너비를 고정한 채 바를 쥐도록 팔 각도를 계산 */
+    if (pose.barPath) {
+      const { start: from, end: to, gripWidth, elbowDir } = pose.barPath;
+      group.updateMatrixWorld(true);
+      group.worldToLocal(joints.spine.localToWorld(tempMid.set(...lerp3(from, to, t))));
+      group.getWorldQuaternion(tempParentQuat).invert();
+      joints.spine.getWorldQuaternion(tempQuat).premultiply(tempParentQuat);
+
+      tempDir.copy(X_AXIS).applyQuaternion(tempQuat);
+      [['l', 1], ['r', -1]].forEach(([side, s]) => {
+        tempGrip.copy(tempMid).addScaledVector(tempDir, s * gripWidth);
+        tempPole.set(s * elbowDir[0], elbowDir[1], elbowDir[2]).applyQuaternion(tempQuat);
+        applyArmIk(group, { shoulder: joints[`${side}Shoulder`], elbow: joints[`${side}Elbow`] }, tempGrip, tempPole);
+      });
+      group.updateMatrixWorld(true);
+    }
+
     /** 바벨 · 손잡이: 두 손 가운데에 두고 두 손을 잇는 방향으로 */
     if (isBar && !pose.barOnBack && heldRef.current) {
       const left = toLocal(joints.lGrip, tempLeft);
@@ -165,13 +182,18 @@ function PostureRig({ pose, isPlaying = true, dragRef }) {
       }
     }
 
-    /** 덤벨: 각 손에 붙여 손 방향을 따른다 */
+    /** 덤벨: 각 손에 붙인다. dumbbellDir 이 있으면 손잡이를 그 방향으로 고정, 없으면 손 방향을 따른다 */
     if (held === 'dumbbells') {
       group.getWorldQuaternion(tempParentQuat).invert();
+      if (pose.dumbbellDir) tempDir.set(...pose.dumbbellDir).normalize();
       [[joints.lGrip, leftBellRef.current], [joints.rGrip, rightBellRef.current]].forEach(([grip, bell]) => {
         if (!bell) return;
         toLocal(grip, bell.position);
-        bell.quaternion.copy(tempParentQuat).multiply(grip.getWorldQuaternion(tempQuat));
+        if (pose.dumbbellDir) {
+          bell.quaternion.setFromUnitVectors(X_AXIS, tempDir);
+        } else {
+          bell.quaternion.copy(tempParentQuat).multiply(grip.getWorldQuaternion(tempQuat));
+        }
       });
     }
 

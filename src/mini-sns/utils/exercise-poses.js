@@ -11,11 +11,14 @@
  * start ↔ end 두 자세를 오가며 동작을 보여준다.
  * - isGrounded: true 면 발바닥이 바닥에 붙도록 몸 위치를 자동으로 맞춘다.
  * - held: 손에 쥔 기구 ('barbell' | 'lat-bar' | 'v-handle' | 'dumbbells')
+ * - dumbbellDir: 덤벨 손잡이가 향할 방향 (예: [1, 0, 0] = 좌우 가로). 없으면 손 방향을 따른다
  * - cableAnchor: 손잡이와 연결되는 케이블 도르래 위치
  * - legIk: { stance, toeOut } 가 있으면 발목 위치(좌우 ±stance)와 발끝 방향(바깥으로 toeOut)을 고정하고
  *   골반 위치에 맞춰 다리 각도를 자동 계산한다. (발이 미끄러지지 않음)
  * - barOnBack: { position, gripWidth, elbowDir } 가 있으면 바벨을 척추 기준 position(승모근 위)에 고정하고
  *   두 손이 바 중앙에서 ±gripWidth 지점을 쥐도록 팔 각도를 자동 계산한다. (elbowDir: 팔꿈치 방향, 척추 기준)
+ * - barPath: { start, end, gripWidth, elbowDir } 가 있으면 바 중앙을 척추 기준 start ↔ end 위치로 움직이고
+ *   두 손이 항상 바 중앙에서 ±gripWidth 지점을 쥐도록 팔 각도를 자동 계산한다. (그립 너비 고정)
  * - muscles: { primary, secondary } 주동근(빨강) · 보조근(연한 빨강)으로 강조할 근육
  * - footPlate: 발에 붙어 움직이는 발판 (normal = 발판이 바라보는 방향)
  * - equipment: 고정된 기구 조각 목록 (shape: box | cylinder | sphere, tone: frame | pad | metal | plate | mat)
@@ -79,19 +82,16 @@ export const EXERCISE_POSES = {
     muscles: { primary: ['chest'], secondary: ['shoulders', 'triceps'] },
     viewAngle: -1.25,
     held: 'barbell',
+    barPath: { start: [0, 0.42, 0.55], end: [0, 0.36, 0.15], gripWidth: 0.4, elbowDir: [0.7, -0.35, -0.6] },
     start: {
       rootPosition: [0, 0.61, 0.25],
       rootRotation: [-Math.PI / 2, 0, 0],
-      ...sym('Shoulder', [-1.5, 0, 0.18]),
-      ...sym('Elbow', [-0.05]),
       ...sym('Hip', [0.3, 0, 0.25]),
       ...sym('Knee', [1.27]),
     },
     end: {
       rootPosition: [0, 0.61, 0.25],
       rootRotation: [-Math.PI / 2, 0, 0],
-      ...sym('Shoulder', [-0.15, 0, 0.9]),
-      ...sym('Elbow', [-1.5]),
       ...sym('Hip', [0.3, 0, 0.25]),
       ...sym('Knee', [1.27]),
     },
@@ -134,20 +134,17 @@ export const EXERCISE_POSES = {
     viewAngle: -0.7,
     held: 'lat-bar',
     cableAnchor: [0, 2.28, 0.12],
+    barPath: { start: [0, 0.97, 0.08], end: [0, 0.42, 0.18], gripWidth: 0.42, elbowDir: [0.7, -0.6, -0.3] },
     start: {
       rootPosition: [0, 0.55, 0],
       spine: [-0.15, 0, 0],
       head: [-0.15, 0, 0],
-      ...sym('Shoulder', [0, 1.2, 2.6]),
-      ...sym('Elbow', [-0.05]),
       ...sym('Hip', [-1.5, 0, 0.12]),
       ...sym('Knee', [1.5]),
     },
     end: {
       rootPosition: [0, 0.55, 0],
       spine: [-0.3, 0, 0],
-      ...sym('Shoulder', [0.15, 1.2, 0.5]),
-      ...sym('Elbow', [-2.65]),
       ...sym('Hip', [-1.5, 0, 0.12]),
       ...sym('Knee', [1.5]),
     },
@@ -155,10 +152,10 @@ export const EXERCISE_POSES = {
       { shape: 'box', args: [0.42, 0.07, 0.4], position: [0, 0.395, 0.03], tone: 'pad' },
       { shape: 'box', args: [0.08, 0.36, 0.08], position: [0, 0.18, 0.03], tone: 'frame' },
       { shape: 'cylinder', args: [0.05, 0.05, 0.5, 16], position: [0, 0.66, 0.36], rotation: ALONG_X, tone: 'pad' },
-      { shape: 'box', args: [0.1, 2.35, 0.1], position: [0, 1.175, -0.6], tone: 'frame' },
-      { shape: 'box', args: [0.08, 0.08, 0.8], position: [0, 2.32, -0.22], tone: 'frame' },
+      { shape: 'box', args: [0.1, 2.35, 0.1], position: [0, 1.175, 0.6], tone: 'frame' },
+      { shape: 'box', args: [0.08, 0.08, 0.8], position: [0, 2.32, 0.22], tone: 'frame' },
       { shape: 'sphere', args: [0.05, 16, 12], position: [0, 2.28, 0.12], tone: 'metal' },
-      { shape: 'box', args: [0.3, 0.8, 0.18], position: [0, 0.45, -0.78], tone: 'pad' },
+      { shape: 'box', args: [0.3, 0.8, 0.18], position: [0, 0.45, 0.78], tone: 'pad' },
     ],
   },
   'leg-press': {
@@ -198,6 +195,7 @@ export const EXERCISE_POSES = {
     muscles: { primary: ['shoulders'], secondary: ['triceps', 'traps'] },
     viewAngle: -0.55,
     held: 'dumbbells',
+    dumbbellDir: [1, 0, 0],
     start: {
       rootPosition: [0, 0.56, 0],
       ...sym('Shoulder', [-0.25, 1.57, 1.4]),
